@@ -13,6 +13,18 @@ PrefabInstance:
       value: PacStudent
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: de52e872a52737148997d5ec09c52141, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878350319992209165, guid: de52e872a52737148997d5ec09c52141, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878350319992209165, guid: de52e872a52737148997d5ec09c52141, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878350319992209165, guid: de52e872a52737148997d5ec09c52141, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
