@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PacStudent
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: de52e872a52737148997d5ec09c52141, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: de52e872a52737148997d5ec09c52141, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 542186005
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: de52e872a52737148997d5ec09c52141, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5

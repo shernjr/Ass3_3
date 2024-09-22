@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Power_Pellet
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 281e823d8a621054da6af30092ae8c07, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 281e823d8a621054da6af30092ae8c07, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 542186005
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 281e823d8a621054da6af30092ae8c07, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

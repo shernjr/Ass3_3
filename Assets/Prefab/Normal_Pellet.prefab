@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Normal_Pellet
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: f044bd58d7f77884d9bd450702fd9fd1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: f044bd58d7f77884d9bd450702fd9fd1, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 542186005
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: f044bd58d7f77884d9bd450702fd9fd1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

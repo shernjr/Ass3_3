@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bonus_Score_Cherry
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 6fe08291ef8ea8e4a8540d06ab27cb5f, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 6fe08291ef8ea8e4a8540d06ab27cb5f, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 542186005
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 6fe08291ef8ea8e4a8540d06ab27cb5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
