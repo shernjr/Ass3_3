@@ -19,6 +19,7 @@ namespace Script.PacMovement {
         void Start()
         {
             _tweener = GetComponent<Tweener>();
+            
             StartPosition();
             MoveToNextPos();
         
@@ -31,6 +32,8 @@ namespace Script.PacMovement {
                 new Vector3(-7.5f, 8f, 0),     // bottom right
                 new Vector3(-7.5f, 11.7f, 0),  // top right
             };
+            pacStudent.position = _positions[0];
+            _currentTargetIndex = 1;
         }
 
         private void MoveToNextPos() {

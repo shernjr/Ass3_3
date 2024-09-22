@@ -1006,7 +1006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pacStudent: {fileID: 869956242}
-  moveSpeed: 5
+  moveSpeed: 1
   moveAudio: {fileID: 105272676}
   pacAnimator: {fileID: 869956240}
 --- !u!114 &869956244
