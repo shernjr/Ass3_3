@@ -1,14 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace Script.LevelGen {
     public class LevelGenerator : MonoBehaviour
     {   
+        // to delete existing quadrants
         [SerializeField] private Tilemap topLeft;
         [SerializeField] private Tilemap topRight;
         [SerializeField] private Tilemap bottomLeft;
         [SerializeField] private Tilemap bottomRight;
         
+        // assigning tiles for proc gen.
         [SerializeField] private Tilemap tilemap;
         [SerializeField] private Tile outsideCorner;
         [SerializeField] private Tile outsideWall;
@@ -66,7 +69,7 @@ namespace Script.LevelGen {
                 for (int col = 0; col < _levelMap.GetLength(1); col++)
                 {
                     Vector3Int tilePosition = new Vector3Int((int)_startPos.x + col,(int)_startPos.y - row, 0);
-
+                    
                     int tileType = _levelMap[row, col];
 
                     switch (tileType)
@@ -76,15 +79,19 @@ namespace Script.LevelGen {
                             break;
                         case 1:
                             tilemap.SetTile(tilePosition, outsideCorner);
+                            RotateOuterCorner(tilePosition, row, col); // outside corner
                             break;
                         case 2:
                             tilemap.SetTile(tilePosition, outsideWall);
+                            RotateOuterWall(tilePosition, row, col); // outside wall
                             break;
                         case 3:
                             tilemap.SetTile(tilePosition, insideCorner);
+                            RotateInnerCorner(tilePosition, row, col); // inside corner
                             break;
                         case 4:
                             tilemap.SetTile(tilePosition, insideWall);
+                            RotateInnerWall(tilePosition, row, col); // inside wall
                             break;
                         case 5:
                             tilemap.SetTile(tilePosition, floor);
@@ -106,7 +113,199 @@ namespace Script.LevelGen {
                 }
             }
         }
+        
+        private void RotateOuterWall(Vector3Int tilePosition, int row, int col) {
+            var adjacentTiles = GetAdjacentTiles(row, col);
+
+            int leftTile = adjacentTiles["left"];
+            int rightTile = adjacentTiles["right"];
+            int topTile = adjacentTiles["top"];
+            int bottomTile = adjacentTiles["bottom"];
+            
+            // OUTER WALL
+            if ((IsOuterWall(leftTile) && IsOuterWall(rightTile)) && (!IsOuterWall(topTile) && !IsOuterWall(bottomTile))) {
+                // Horizontal wall (default)
+                tilemap.SetTile(tilePosition, outsideWall);
+                tilemap.SetTransformMatrix(tilePosition, Matrix4x4.identity); // No rotation
+            }
+            else if ((IsOuterWall(topTile) && IsOuterWall(bottomTile)) && (!IsOuterWall(leftTile) && !IsOuterWall(rightTile))) {
+                // Vertical wall (rotate 90 degrees)
+                tilemap.SetTile(tilePosition, outsideWall);
+                tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90)));
+            }
+            
+            // OUTER CORNER - default position is (make L with left hand, thumbs down & index right.)
+            if (IsOuterCorner(1)) {
+                if (leftTile == 2 && topTile == 2) {
+                    // Top-left corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 180)));
+                }
+                else if (rightTile == 2 && topTile == 2) {
+                    // Top-right corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90)));
+                }
+                else if (rightTile == 2 && bottomTile == 2) {
+                    // Bottom-right corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 0)));
+                }
+                else if (leftTile == 2 && bottomTile == 2) {
+                    // Bottom-left corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 270)));
+                }
+            }
+        }
+
+        private void RotateOuterCorner(Vector3Int tilePosition, int row, int col) {
+            var adjacentTiles = GetAdjacentTiles(row, col);
+
+            int leftTile = adjacentTiles["left"];
+            int rightTile = adjacentTiles["right"];
+            int topTile = adjacentTiles["top"];
+            int bottomTile = adjacentTiles["bottom"];
+            
+            // OUTER CORNER - default position is (make L with left hand, thumbs down & index right.)
+            if (IsOuterCorner(1)) {
+                if (leftTile == 2 && topTile == 2) {
+                    // Top-left corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 180)));
+                }
+                else if (rightTile == 2 && topTile == 2) {
+                    // Top-right corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90)));
+                }
+                else if (rightTile == 2 && bottomTile == 2) {
+                    // Bottom-right corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 0)));
+                }
+                else if (leftTile == 2 && bottomTile == 2) {
+                    // Bottom-left corner
+                    tilemap.SetTile(tilePosition, outsideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 270)));
+                }
+            }
+        }
+        
+        private void RotateInnerCorner(Vector3Int tilePosition, int row, int col) {
+            var adjacentTiles = GetAdjacentTiles(row, col);
+
+            int leftTile = adjacentTiles["left"];
+            int rightTile = adjacentTiles["right"];
+            int topTile = adjacentTiles["top"];
+            int bottomTile = adjacentTiles["bottom"];
+            
+            if (IsInsideCornerOrWall(3)) {
+                
+                if (IsInsideCornerOrWall(topTile) && IsInsideCornerOrWall(rightTile)) {
+                    // Override: Rotate 270 if there is a wall on top and right
+                    tilemap.SetTile(tilePosition, insideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 270)));
+                } 
+                else if (IsInsideCornerOrWall(bottomTile) && IsInsideCornerOrWall(leftTile)) {
+                    // Override: Rotate 180 if there is a wall on bottom and right
+                    tilemap.SetTile(tilePosition, insideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90)));
+                } 
+                else if (IsInsideCornerOrWall(bottomTile) && IsInsideCornerOrWall(rightTile) && rightTile == 4) { // YEA NAH I GIVE UP. 
+                    // Override: Rotate 180 if there is a wall on bottom and right
+                    tilemap.SetTile(tilePosition, insideCorner);
+                    tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 180)));
+                } 
+                else {
+                    // Case 1: if left and top are not corners or walls, rotate 180
+                    if (!IsInsideCornerOrWall(leftTile) && !IsInsideCornerOrWall(topTile)) {
+                        tilemap.SetTile(tilePosition, insideCorner);
+                        tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 180)));
+                    }
+                    // Case 2: if top and right are not corners or walls, rotate 90
+                    else if (!IsInsideCornerOrWall(topTile) && !IsInsideCornerOrWall(rightTile)) {
+                        tilemap.SetTile(tilePosition, insideCorner);
+                        tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90)));
+                    }
+                    // Case 3: if left and bottom are not corners or walls, rotate 270
+                    else if (!IsInsideCornerOrWall(leftTile) && !IsInsideCornerOrWall(bottomTile)) {
+                        tilemap.SetTile(tilePosition, insideCorner);
+                        tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 270)));
+                    }
+                    // Case 4: if right and bottom are not corners or walls, leave it as the default orientation (0 degrees)
+                    else if (!IsInsideCornerOrWall(rightTile) && !IsInsideCornerOrWall(bottomTile)) {
+                        tilemap.SetTile(tilePosition, insideCorner);
+                        tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 0)));
+                    }
+                }
+            }
+        }
+
+
+        
+        private void RotateInnerWall(Vector3Int tilePosition, int row, int col) {
+            var adjacentTiles = GetAdjacentTiles(row, col);
+
+            int leftTile = adjacentTiles["left"];
+            int rightTile = adjacentTiles["right"];
+            int topTile = adjacentTiles["top"];
+            int bottomTile = adjacentTiles["bottom"];
+
+            // Define pellet tile type (assuming 5 is a standard pellet and 6 is a power pellet)
+            bool topHasPelletOrFloor = topTile == 5 || topTile == 6 || topTile == 0; 
+            bool bottomHasPelletOrFloor = bottomTile == 5 || bottomTile == 6 || bottomTile == 0;
+            bool leftHasPelletOrFloor = leftTile == 5 || leftTile == 6 || leftTile == 0;
+            bool rightHasPelletOrFloor = rightTile == 5 || rightTile == 6 || rightTile == 0;
+
+            // Conditions for wall orientation
+            if (topHasPelletOrFloor || bottomHasPelletOrFloor) {
+                // If top or bottom has pellets or floor, stay horizontal
+                tilemap.SetTile(tilePosition, insideWall);
+                tilemap.SetTransformMatrix(tilePosition, Matrix4x4.identity); // No rotation
+            } 
+            else if (leftHasPelletOrFloor || rightHasPelletOrFloor) {
+                // If left or right has pellets or floor, rotate to vertical
+                tilemap.SetTile(tilePosition, insideWall);
+                tilemap.SetTransformMatrix(tilePosition, Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90)));
+            } 
+            else {
+                // Default orientation (horizontal)
+                tilemap.SetTile(tilePosition, insideWall);
+                tilemap.SetTransformMatrix(tilePosition, Matrix4x4.identity); // No rotation
+            }
+        }
+        
+        
+        private bool IsInsideWall(int tileType) {
+            // Check if tile is a wall or valid connector (inner wall, inner corner, T-junction)
+            return tileType == 4 || tileType == 3 || tileType == 7;
+        }
+
+        private bool IsInsideCornerOrWall(int tileType) {
+            return tileType == 3 || tileType == 4;
+        }
+        
+        private bool IsOuterWall(int tileType) {
+            // Check if tile is a wall or valid connector (outside corner, outside wall, T-junction)
+            return tileType == 1 || tileType == 2 || tileType == 7;
+        }
+
+        private bool IsOuterCorner(int tileType) {
+            return tileType == 1;
+        }
+        
+        private Dictionary<string, int> GetAdjacentTiles(int row, int col)
+        {
+            // Fetch adjacent tiles and return them in a dictionary
+            return new Dictionary<string, int>
+            {
+                { "left", col > 0 ? _levelMap[row, col - 1] : -1 },
+                { "right", col < _levelMap.GetLength(1) - 1 ? _levelMap[row, col + 1] : -1 },
+                { "top", row > 0 ? _levelMap[row - 1, col] : -1 },
+                { "bottom", row < _levelMap.GetLength(0) - 1 ? _levelMap[row + 1, col] : -1 }
+            };
+        }
+        
     }
-    
-    // TBD: aligning walls method | mirroring all of the above. 
 }
