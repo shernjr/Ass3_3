@@ -20,12 +20,12 @@ namespace Script.PacMovement {
         {
             _tweener = GetComponent<Tweener>();
             
-            StartPosition();
-            MoveToNextPos();
+            /*StartPosition();
+            MoveToNextPos();*/
         
         }
     
-        private void StartPosition() {
+        /*private void StartPosition() {
             _positions = new Vector3[] {
                 new Vector3(-12.5f, 11.8f, 0), // top left
                 new Vector3(-12.5f, 8f, 0),    // bottom left
@@ -46,7 +46,7 @@ namespace Script.PacMovement {
             }
 
             _currentTargetIndex = (_currentTargetIndex + 1) % _positions.Length;
-        }
+        }*/
     
         private void UpdateAnimator(Vector3 direction) {
             float moveX = direction.x;
@@ -69,9 +69,9 @@ namespace Script.PacMovement {
         }
     
         private void Update() {
-            if (!_tweener.TweenExists(pacStudent)) {
+            /*if (!_tweener.TweenExists(pacStudent)) {
                 MoveToNextPos();
-            }
+            }*/
         }
     }
 }
