@@ -47,3 +47,6 @@ TagManager:
   - name: GameObjects
     uniqueID: 542186005
     locked: 0
+  - name: HUD
+    uniqueID: 114919177
+    locked: 0
