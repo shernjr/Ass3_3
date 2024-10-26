@@ -9,21 +9,20 @@ namespace Script.PacMovement {
         public Animator pacAnimator; // Reference to the Animator
         private Vector3[] _positions;
         private int _currentTargetIndex;
+        private KeyCode _lastInput;
 
         private Tweener _tweener;
         
-    
-        // Start is called before the first frame update
         void Start()
         {
             _tweener = GetComponent<Tweener>();
             
-            /*StartPosition();
-            MoveToNextPos();*/
+            StartPosition();
+            MoveToNextPos();
         
         }
     
-        /*private void StartPosition() {
+        private void StartPosition() {
             _positions = new Vector3[] {
                 new Vector3(-12.5f, 11.8f, 0), // top left
                 new Vector3(-12.5f, 8f, 0),    // bottom left
@@ -44,7 +43,9 @@ namespace Script.PacMovement {
             }
 
             _currentTargetIndex = (_currentTargetIndex + 1) % _positions.Length;
-        }*/
+        }
+        
+        
     
         private void UpdateAnimator(Vector3 direction) {
             float moveX = direction.x;
@@ -65,11 +66,11 @@ namespace Script.PacMovement {
                 moveAudio.Stop();
             }
         }
+
+        
     
         private void Update() {
-            /*if (!_tweener.TweenExists(pacStudent)) {
-                MoveToNextPos();
-            }*/
+            MoveToNextPos();
         }
     }
 }

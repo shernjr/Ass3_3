@@ -27,7 +27,7 @@ namespace Script.PacMovement {
             if (TweenExists(targetObject)) {
                 return false;
             }
-            var newTweenObject = new Tween(targetObject, startPos, endPos, Time.time, duration);
+            var newTweenObject = new Tween(targetObject, startPos, endPos, Time.deltaTime, duration);
             _activeTweens.Add(newTweenObject);
             return true;
         }
@@ -47,7 +47,7 @@ namespace Script.PacMovement {
                     tween.Target.position = tween.EndPos;
                     _activeTweens.RemoveAt(i);
 
-                    var pacStuMove = tween.Target.GetComponent<PacStudentMovement>();
+                    var pacStuMove = tween.Target.GetComponent<PacStudentController>();
                     if (pacStuMove != null) {
                         pacStuMove.StopMovementAudio();
                     }
