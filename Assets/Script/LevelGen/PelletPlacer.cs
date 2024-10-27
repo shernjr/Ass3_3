@@ -46,25 +46,25 @@ namespace Script.LevelGen {
                     Vector3 position = new Vector3(x, -y, 0);
 
                     position = ApplyQuadrantTransform(position, startingOffset, flipX, flipY);
-
-                    // Apply mirroring based on flip flags
+                    
                     if (flipX) {
                         position.x = -position.x;
                     }
                     if (flipY) {
                         position.y = -position.y;
                     }
-
-                    // Offset by the quadrant's position
-                   // position += quadrantPosition;
-
-                    // Convert to screen space coordinates
+                    
                     position = rectTransform.TransformPoint(position);
 
                     if (levelMap[y, x] == 5) {
                         Instantiate(pellet, position, Quaternion.identity, quadrant);
                     } else if (levelMap[y, x] == 6) {
-                        position.y -= 0.2f;
+                        if (flipY) {
+                            position.y += 0.5f;
+                        }
+                        else {
+                            position.y -= 0.5f;
+                        }
                         Instantiate(powerPellet, position, Quaternion.identity, quadrant);
                     }
                 }
@@ -74,16 +74,14 @@ namespace Script.LevelGen {
     
         Vector3 ApplyQuadrantTransform(Vector3 originalPosition, Vector3 quadrantPosition, bool flipX, bool flipY) {
             Vector3 newPosition = originalPosition;
-
-            // Apply mirroring based on flip flags
+            
             if (flipX) {
                 newPosition.x = -newPosition.x;
             }
             if (flipY) {
                 newPosition.y = -newPosition.y;
             }
-
-            // Offset by the quadrant's position
+            
             newPosition += quadrantPosition;
 
             return newPosition;
