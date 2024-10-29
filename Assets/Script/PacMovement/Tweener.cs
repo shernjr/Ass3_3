@@ -34,18 +34,15 @@ namespace Script.PacMovement {
         private void TweenPosition() {
             for (var i = _activeTweens.Count - 1; i >= 0; i--) {
                 var tween = _activeTweens[i];
-            
                 var dis = Vector3.Distance(tween.Target.position, tween.EndPos);
                 if (dis > 0.1f) {
                     var fraction = (Time.time - tween.StartTime) / tween.Duration;
                     var f = fraction; //Mathf.Pow(fraction, 3)
-
-                    tween.Target.position = Vector3.Lerp(tween.StartPos, tween.EndPos, f * Time.fixedDeltaTime);
+                    tween.Target.position = Vector3.Lerp(tween.StartPos, tween.EndPos, f);
                 }
                 else {
                     tween.Target.position = tween.EndPos;
                     _activeTweens.RemoveAt(i);
-
                     var pacStuMove = tween.Target.GetComponent<PacStudentController>();
                     if (pacStuMove != null) {
                         pacStuMove.StopMovementAudio();

@@ -73,9 +73,9 @@ AnimatorState:
   m_Motion: {fileID: 7400000, guid: 3eecf37336f00df47bffa843c5addafc, type: 2}
   m_Tag: 
   m_SpeedParameter: moveX
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_MirrorParameter: isDead
+  m_CycleOffsetParameter: moveX
+  m_TimeParameter: moveX
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0

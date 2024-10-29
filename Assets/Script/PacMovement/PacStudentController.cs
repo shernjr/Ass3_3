@@ -4,16 +4,20 @@ namespace Script.PacMovement {
     public class PacStudentController : MonoBehaviour {
 
         public Transform pacStudent;
+        public Transform topLeftQuadrant;
+        public Transform topRightQuadrant;
+        public Transform bottomLeftQuadrant;
+        public Transform bottomRightQuadrant;
+        
         public float moveSpeed = 1f;
         public Animator pacAnimator;
         public AudioSource moveAudio;
-        public Transform mapParent;
         private Tweener _tweener;
         private Vector3 _currentGridPosition;
         private KeyCode? _lastInput = null;
         private KeyCode? _currentInput = null;
 
-        readonly int[,] _levelMap = 
+        int[,] _levelMap = 
         { 
             {1,2,2,2,2,2,2,2,2,2,2,2,2,7}, 
             {2,5,5,5,5,5,5,5,5,5,5,5,5,4}, 
@@ -34,8 +38,7 @@ namespace Script.PacMovement {
         
         private void Start() {
             _tweener = GetComponent<Tweener>();
-            _currentGridPosition = pacStudent.localPosition;
-            Debug.Log($"Starting position: {_currentGridPosition}");
+            _currentGridPosition = pacStudent.position;
         }
         
         private void Update() {
@@ -46,18 +49,10 @@ namespace Script.PacMovement {
         }
 
         private void GetMovementOnKeyDown() {
-            if (Input.GetKeyDown(KeyCode.W)) {
-                _lastInput = KeyCode.W;
-            }
-            if (Input.GetKeyDown(KeyCode.A)) {
-                _lastInput = KeyCode.A;
-            }
-            if (Input.GetKeyDown(KeyCode.S)) {
-                _lastInput = KeyCode.S;
-            }
-            if (Input.GetKeyDown(KeyCode.D)) {
-                _lastInput = KeyCode.D;
-            }
+            if (Input.GetKeyDown(KeyCode.W)) _lastInput = KeyCode.W;
+            if (Input.GetKeyDown(KeyCode.A)) _lastInput = KeyCode.A;
+            if (Input.GetKeyDown(KeyCode.S)) _lastInput = KeyCode.S;
+            if (Input.GetKeyDown(KeyCode.D)) _lastInput = KeyCode.D;
         }
 
         private void TryToMove(KeyCode? input) {
@@ -65,14 +60,10 @@ namespace Script.PacMovement {
             Vector3 targetGridPosition = _currentGridPosition;
 
             switch (input.Value) {
-                case KeyCode.W: targetGridPosition += Vector3.up;
-                    break;
-                case KeyCode.A: targetGridPosition += Vector3.left;
-                    break;
-                case KeyCode.S: targetGridPosition += Vector3.down;
-                    break;
-                case KeyCode.D: targetGridPosition += Vector3.right;
-                    break;
+                case KeyCode.W: targetGridPosition += Vector3.up; break;
+                case KeyCode.A: targetGridPosition += Vector3.left; break;
+                case KeyCode.S: targetGridPosition += Vector3.down; break;
+                case KeyCode.D: targetGridPosition += Vector3.right; break;
             }
             
             if (IsWalkable(targetGridPosition)) {
@@ -83,18 +74,18 @@ namespace Script.PacMovement {
             }
         }
 
-        private bool IsWalkable(Vector3 position) {
-            Vector3 worldPos = mapParent.TransformPoint(position);
-            int x = Mathf.RoundToInt(worldPos.x);
-            int y = Mathf.RoundToInt(worldPos.y);
+        private bool IsWalkable(Vector3 gridPos) {
+            int x = Mathf.RoundToInt(gridPos.x);
+            int y = Mathf.RoundToInt(gridPos.y);
 
-            return x >= 0 && x < _levelMap.GetLength(0) && y >= 0 && y < _levelMap.GetLength(1) &&
-                   (_levelMap[x, y] == 5 || _levelMap[x, y] == 6);
+            return x >= 0 && x < _levelMap.GetLength(1) &&
+                   y >= 0 && y < _levelMap.GetLength(0) &&
+                   (_levelMap[y, x] == 5 || _levelMap[y, x] == 6);
         }
         
         private void MoveToGridPosition(Vector3 targetGridPosition) {
-            Vector3 startPos = pacStudent.localPosition;
-            Vector3 endPos = mapParent.TransformPoint(new Vector3(targetGridPosition.x, targetGridPosition.y, pacStudent.localPosition.z));
+            Vector3 startPos = pacStudent.position;
+            Vector3 endPos = targetGridPosition;
 
             if (_tweener.AddTween(pacStudent, startPos, endPos, moveSpeed)) {
                 Vector3 direction = (startPos - endPos).normalized;
@@ -103,6 +94,16 @@ namespace Script.PacMovement {
             }
             _currentGridPosition = targetGridPosition;
         }
+
+        /*private Vector3 WorldToGridPos(Vector3 worldPos) {
+            Vector3 localPos = mapParent.InverseTransformPoint(worldPos);
+            return new Vector3(Mathf.Round(localPos.x), Mathf.Round(localPos.y), localPos.z);
+        }
+        
+        private Vector3 GridToWorldPos(Vector3 gridPosition) {
+            Vector3 localPos = (gridPosition);
+            return mapParent.TransformPoint(new Vector3(localPos.x, localPos.y, pacStudent.position.z));
+        }*/
         
         private void UpdateAnimator(Vector3 direction) {
             pacAnimator.SetFloat("moveX", direction.x);
