@@ -94,16 +94,6 @@ namespace Script.PacMovement {
             }
             _currentGridPosition = targetGridPosition;
         }
-
-        /*private Vector3 WorldToGridPos(Vector3 worldPos) {
-            Vector3 localPos = mapParent.InverseTransformPoint(worldPos);
-            return new Vector3(Mathf.Round(localPos.x), Mathf.Round(localPos.y), localPos.z);
-        }
-        
-        private Vector3 GridToWorldPos(Vector3 gridPosition) {
-            Vector3 localPos = (gridPosition);
-            return mapParent.TransformPoint(new Vector3(localPos.x, localPos.y, pacStudent.position.z));
-        }*/
         
         private void UpdateAnimator(Vector3 direction) {
             pacAnimator.SetFloat("moveX", direction.x);

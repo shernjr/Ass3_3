@@ -4,82 +4,118 @@ namespace Script.PacMovement {
     public class TestMovement : MonoBehaviour {
     
         public Transform pacStudent;
-        public float moveSpeed = 1f;
         public Animator pacAnimator;
         public AudioSource moveAudio;
-        public Transform mapParent;
+        public Transform topLeftQuadrant;
+        public Transform topRightQuadrant;
+        public Transform bottomLeftQuadrant;
+        public Transform bottomRightQuadrant;
+
+        public float moveSpeed = 1f;
         private Tweener _tweener;
-        private Vector3 _currentGridPosition;
-        private KeyCode? _lastInput = null;
-        private KeyCode? _currentInput = null;
-        private float _originalZ; // Store original Z position
+        private Vector2Int _currentGridPos = new Vector2Int(1, 1);
+        private Vector2Int _lastInput = Vector2Int.zero;
+        private Vector2Int _currentInput = Vector2Int.zero;
+
+        private static readonly Vector3 PacStudentStartOffset = new Vector3(1f, 1f, 0);
+        private static readonly Vector3 MapFirstTileOffset = new Vector3(1f,1f, 0);
+
+        private static readonly int MoveX = Animator.StringToHash("moveX");
+        private static readonly int MoveY = Animator.StringToHash("moveY");
+
+        readonly int[,] _levelMap = { 
+            {1,2,2,2,2,2,2,2,2,2,2,2,2,7}, 
+            {2,5,5,5,5,5,5,5,5,5,5,5,5,4}, 
+            {2,5,3,4,4,3,5,3,4,4,4,3,5,4}, 
+            {2,6,4,0,0,4,5,4,0,0,0,4,5,4}, 
+            {2,5,3,4,4,3,5,3,4,4,4,3,5,3}, 
+            {2,5,5,5,5,5,5,5,5,5,5,5,5,5}, 
+            {2,5,3,4,4,3,5,3,3,5,3,4,4,4}, 
+            {2,5,3,4,4,3,5,4,4,5,3,4,4,3}, 
+            {2,5,5,5,5,5,5,4,4,5,5,5,5,4}, 
+            {1,2,2,2,2,1,5,4,3,4,4,3,0,4}, 
+            {0,0,0,0,0,2,5,4,3,4,4,3,0,3}, 
+            {0,0,0,0,0,2,5,4,4,0,0,0,0,0}, 
+            {0,0,0,0,0,2,5,4,4,0,3,4,4,0}, 
+            {2,2,2,2,2,1,5,3,3,0,4,0,0,0}, 
+            {0,0,0,0,0,0,5,0,0,0,4,0,0,0}, 
+        };
 
         private void Start() {
             _tweener = GetComponent<Tweener>();
-            _currentGridPosition = pacStudent.localPosition;
-            _originalZ = _currentGridPosition.z; // Set original Z position
+            _currentGridPos = new Vector2Int(1, 1);  // Initial grid pos
+            MoveToWorldPosition(_currentGridPos);
         }
 
         private void Update() {
-            GetMovementOnKeyDown();
             if (!_tweener.TweenExists(pacStudent)) {
-                TryToMove(_lastInput);
+                Vector2Int direction = GetDirectionFromInput();
+                if (direction != Vector2Int.zero) {
+                    _lastInput = direction; // Store last input
+                }
+
+                if (AttemptMove(_lastInput)) {
+                    _currentInput = _lastInput;
+                }
+                // If lastInput move was blocked, try currentInput
+                else if (AttemptMove(_currentInput)) {
+                    // currentInput is maintained
+                }
             }
         }
 
-        private void GetMovementOnKeyDown() {
-            if (Input.GetKeyDown(KeyCode.W)) {
-                _lastInput = KeyCode.W;
-            }
-            if (Input.GetKeyDown(KeyCode.A)) {
-                _lastInput = KeyCode.A;
-            }
-            if (Input.GetKeyDown(KeyCode.S)) {
-                _lastInput = KeyCode.S;
-            }
-            if (Input.GetKeyDown(KeyCode.D)) {
-                _lastInput = KeyCode.D;
-            }
+        private Vector2Int GetDirectionFromInput() {
+            if (Input.GetKey(KeyCode.W)) return Vector2Int.up;
+            if (Input.GetKey(KeyCode.A)) return Vector2Int.left;
+            if (Input.GetKey(KeyCode.S)) return Vector2Int.down;
+            if (Input.GetKey(KeyCode.D)) return Vector2Int.right;
+            return Vector2Int.zero;
         }
+        
+        private bool AttemptMove(Vector2Int direction) {
+            if (direction == Vector2Int.zero) return false;
 
-        private void TryToMove(KeyCode? input) {
-            if (!input.HasValue) return;
-            Vector3 targetPosition = _currentGridPosition;
-            
-            switch (input.Value) {
-                case KeyCode.W: targetPosition += Vector3.up; break;
-                case KeyCode.A: targetPosition += Vector3.left; break;
-                case KeyCode.S: targetPosition += Vector3.down; break;
-                case KeyCode.D: targetPosition += Vector3.right; break;
-            }
-            
-            if (IsWalkable(targetPosition)) {
-                _currentInput = input;
-                MoveToPosition(targetPosition);
-            } else if (_currentInput.HasValue) {
-                TryToMove(_currentInput);
-            }
-        }
-
-        private bool IsWalkable(Vector3 position) {
-            return true;
-        }
-
-        private void MoveToPosition(Vector3 targetPosition) {
-            Vector3 startPos = pacStudent.localPosition;
-            Vector3 endPos = new Vector3(targetPosition.x, targetPosition.y, _originalZ); // Use original Z position
-
-            if (_tweener.AddTween(pacStudent, startPos, endPos, moveSpeed)) {
-                Vector3 direction = (endPos - startPos).normalized;
+            Vector2Int targetPos = _currentGridPos + direction;
+            if (IsWalkable(targetPos)) {
+                _currentGridPos = targetPos;
+                MoveToWorldPosition(targetPos);
                 UpdateAnimator(direction);
-                //PlayMovementAudio();
+                return true;
             }
-            _currentGridPosition = targetPosition;
+            return false;
         }
 
-        private void UpdateAnimator(Vector3 direction) {
-            pacAnimator.SetFloat("moveX", direction.x);
-            pacAnimator.SetFloat("moveY", direction.y);
+        private bool IsWalkable(Vector2Int gridPos) {
+            int x = gridPos.x, y = gridPos.y;
+            return x >= 0 && x < _levelMap.GetLength(1) && y >= 0 && y < _levelMap.GetLength(0) &&
+                   (_levelMap[y, x] == 5 || _levelMap[y, x] == 6); // Only walkable on 5 or 6
+        }
+
+        private void MoveToWorldPosition(Vector2Int gridPos) {
+            Vector3 worldPosition = GetWorldPosition(gridPos);
+            _tweener.AddTween(pacStudent, pacStudent.position, worldPosition, moveSpeed);
+            PlayMovementAudio();
+        }
+        private Vector3 GetWorldPosition(Vector2Int gridPos) {
+            Transform quadrant = GetQuadrantTransform(gridPos);
+            Vector3 localPosition = new Vector3(gridPos.x, -gridPos.y, 0);
+            return quadrant.TransformPoint(localPosition) + PacStudentStartOffset - MapFirstTileOffset;
+        }
+
+        private Transform GetQuadrantTransform(Vector2Int gridPos) {
+            bool isTopLeft = gridPos.y < _levelMap.GetLength(0) / 2 && gridPos.x < _levelMap.GetLength(1) / 2;
+            bool isTopRight = gridPos.y < _levelMap.GetLength(0) / 2 && gridPos.x >= _levelMap.GetLength(1) / 2;
+            bool isBottomLeft = gridPos.y >= _levelMap.GetLength(0) / 2 && gridPos.x < _levelMap.GetLength(1) / 2;
+
+            if (isTopLeft) return topLeftQuadrant;
+            if (isTopRight) return topRightQuadrant;
+            if (isBottomLeft) return bottomLeftQuadrant;
+            return bottomRightQuadrant;
+        }
+
+        private void UpdateAnimator(Vector2Int direction) {
+            pacAnimator.SetFloat(MoveX, direction.x);
+            pacAnimator.SetFloat(MoveY, direction.y);
         }
 
         private void PlayMovementAudio() {

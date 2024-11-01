@@ -10,7 +10,6 @@ namespace Script.LevelGen {
         [SerializeField] private Transform topRightQuadrant;
         [SerializeField] private Transform bottomLeftQuadrant;
         [SerializeField] private Transform bottomRightQuadrant;
-        
     
         int[,] levelMap =
         {
@@ -71,7 +70,6 @@ namespace Script.LevelGen {
             }
         }
         
-    
         Vector3 ApplyQuadrantTransform(Vector3 originalPosition, Vector3 quadrantPosition, bool flipX, bool flipY) {
             Vector3 newPosition = originalPosition;
             
