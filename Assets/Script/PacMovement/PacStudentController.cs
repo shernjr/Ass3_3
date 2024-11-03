@@ -14,6 +14,7 @@ namespace Script.PacMovement {
         private KeyCode? _currentInput = null;
         private static readonly int MoveX = Animator.StringToHash("moveX");
         private static readonly int MoveY = Animator.StringToHash("moveY");
+        private static readonly int Speed = Animator.StringToHash("Speed");
 
         private void Start() {
             _tweener = GetComponent<Tweener>();
@@ -22,11 +23,25 @@ namespace Script.PacMovement {
         
         private void Update() {
             GetMovementOnKeyDown();
+            
             if (!_tweener.TweenExists(pacStudent)) {
+                pacAnimator.SetFloat(MoveX, 0);
+                pacAnimator.SetFloat(MoveY, 0);
+                StopMovementAudio();
+
                 if (TryToMove(_lastInput)) {
                     _currentInput = _lastInput;
-                } else if (_currentInput.HasValue) {
-                    TryToMove(_currentInput);
+                    PlayMovementAudio();  
+                } 
+                else if (_currentInput.HasValue) {
+                    if (TryToMove(_currentInput)) {
+                        PlayMovementAudio();
+                    }
+                }
+            } 
+            else {
+                if (!moveAudio.isPlaying) {
+                    PlayMovementAudio();
                 }
             }
         }
@@ -78,13 +93,16 @@ namespace Script.PacMovement {
         }
         
         private void UpdateAnimator(Vector3 direction) {
-            pacAnimator.SetFloat(MoveX, direction.x);
-            pacAnimator.SetFloat(MoveY, direction.y);
+
+            float moveX = direction.x;
+            float moveY = direction.y;
+            
+            pacAnimator.SetFloat(MoveX, moveX);
+            pacAnimator.SetFloat(MoveY, moveY);
         }
         
         private void PlayMovementAudio() {
             if (!moveAudio.isPlaying) {
-                moveAudio.loop = true;
                 moveAudio.Play();
             }
         }

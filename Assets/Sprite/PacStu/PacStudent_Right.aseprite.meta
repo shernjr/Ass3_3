@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2792f4d45fbf1ed42ba55839e3cc6e71
+guid: afa72ec4894cc5542bbb04d30e8f8c3f
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -80,7 +80,7 @@ ScriptedImporter:
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
-    generateAnimationClips: 0
+    generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
@@ -93,11 +93,11 @@ ScriptedImporter:
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
-    generateAnimationClips: 0
+    generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638621642578903496
+  platformSettingsDirtyTick: 638662431293263324
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,7 +121,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: PacStudent_Up_Frame_0
+  - name: PacStudent_Right_Frame_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -130,9 +130,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 22
-      height: 19
-    spriteID: 12183e2f3478f7b489f92e38377fbb4d
+      width: 19
+      height: 22
+    spriteID: bb5c84c1951a3d640a414e539edf76c4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -141,7 +141,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: PacStudent_Up_Frame_1
+  - name: PacStudent_Right_Frame_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -149,10 +149,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 31
-      width: 21
-      height: 19
-    spriteID: ba11e6e0695a0664094b36046f290095
+      y: 34
+      width: 19
+      height: 21
+    spriteID: e02436dd1e45e6f43b72bc680426f39d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -160,8 +160,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 31}
-  - name: PacStudent_Up_Frame_2
+    uvTransform: {x: 4, y: 34}
+  - name: PacStudent_Right_Frame_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -169,10 +169,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 85
-      width: 20
-      height: 19
-    spriteID: b8c825b91957683498bbf985c04c14a9
+      y: 92
+      width: 19
+      height: 20
+    spriteID: edf69cc8010d08047aa6187e9c73ecbe
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -180,19 +180,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 85}
-  - name: PacStudent_Up_Frame_3
+    uvTransform: {x: 4, y: 92}
+  - name: PacStudent_Right_Frame_3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 34
+      x: 31
       y: 4
-      width: 20
-      height: 19
-    spriteID: c7826b441d343a34297453e900973ba0
+      width: 19
+      height: 20
+    spriteID: 3909db6454270fb4e9ad22c2ba1dc9dc
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -200,19 +200,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 34, y: 4}
-  - name: PacStudent_Up_Frame_4
+    uvTransform: {x: 31, y: 4}
+  - name: PacStudent_Right_Frame_4
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 34
-      y: 31
-      width: 20
-      height: 19
-    spriteID: 27078d8c008448c42b2028bf99fdc583
+      x: 31
+      y: 32
+      width: 19
+      height: 20
+    spriteID: 3111548a44f77974a8b34623d1616f8b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -220,8 +220,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 34, y: 31}
-  - name: PacStudent_Up_Frame_5
+    uvTransform: {x: 31, y: 32}
+  - name: PacStudent_Right_Frame_5
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -229,10 +229,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 58
-      width: 21
-      height: 19
-    spriteID: fbd905e8453a7074c8f6df7c1569e31c
+      y: 63
+      width: 19
+      height: 21
+    spriteID: 25b29a3b547165f458cf081817be5eec
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -240,64 +240,64 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 58}
+    uvTransform: {x: 4, y: 63}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1242423519
-    name: PacStudent_Up
+    guid: 718747248
+    name: PacStudent_Right
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: PacStudent_Up_Frame_0
+    - name: PacStudent_Right_Frame_0
       frameIndex: 0
       cellRect:
-        x: 5
+        x: 7
         y: 7
-        width: 22
-        height: 19
-      spriteId: 12183e2f3478f7b489f92e38377fbb4d
-    - name: PacStudent_Up_Frame_1
+        width: 19
+        height: 22
+      spriteId: bb5c84c1951a3d640a414e539edf76c4
+    - name: PacStudent_Right_Frame_1
       frameIndex: 1
       cellRect:
-        x: 5
-        y: 7
-        width: 21
-        height: 19
-      spriteId: ba11e6e0695a0664094b36046f290095
-    - name: PacStudent_Up_Frame_2
+        x: 7
+        y: 8
+        width: 19
+        height: 21
+      spriteId: e02436dd1e45e6f43b72bc680426f39d
+    - name: PacStudent_Right_Frame_2
       frameIndex: 2
       cellRect:
-        x: 5
-        y: 7
-        width: 20
-        height: 19
-      spriteId: b8c825b91957683498bbf985c04c14a9
-    - name: PacStudent_Up_Frame_3
+        x: 7
+        y: 9
+        width: 19
+        height: 20
+      spriteId: edf69cc8010d08047aa6187e9c73ecbe
+    - name: PacStudent_Right_Frame_3
       frameIndex: 3
       cellRect:
-        x: 5
-        y: 7
-        width: 20
-        height: 19
-      spriteId: c7826b441d343a34297453e900973ba0
-    - name: PacStudent_Up_Frame_4
+        x: 7
+        y: 9
+        width: 19
+        height: 20
+      spriteId: 3909db6454270fb4e9ad22c2ba1dc9dc
+    - name: PacStudent_Right_Frame_4
       frameIndex: 4
       cellRect:
-        x: 5
-        y: 7
-        width: 20
-        height: 19
-      spriteId: 27078d8c008448c42b2028bf99fdc583
-    - name: PacStudent_Up_Frame_5
+        x: 7
+        y: 9
+        width: 19
+        height: 20
+      spriteId: 3111548a44f77974a8b34623d1616f8b
+    - name: PacStudent_Right_Frame_5
       frameIndex: 5
       cellRect:
-        x: 5
-        y: 7
-        width: 21
-        height: 19
-      spriteId: fbd905e8453a7074c8f6df7c1569e31c
+        x: 7
+        y: 8
+        width: 19
+        height: 21
+      spriteId: 25b29a3b547165f458cf081817be5eec
     linkedCells: []
     parentIndex: -1
   platformSettings:

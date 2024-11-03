@@ -43,10 +43,10 @@ namespace Script.PacMovement {
                 else {
                     tween.Target.position = tween.EndPos;
                     _activeTweens.RemoveAt(i);
-                    var pacStuMove = tween.Target.GetComponent<PacStudentController>();
+                    /*var pacStuMove = tween.Target.GetComponent<PacStudentController>();
                     if (pacStuMove != null) {
                         pacStuMove.StopMovementAudio();
-                    }
+                    }*/
                 }
             }
         }
