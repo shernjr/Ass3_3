@@ -7,6 +7,7 @@ namespace Script.PacMovement {
         public float moveSpeed = 1f;
         public Animator pacAnimator;
         public AudioSource moveAudio;
+        public ParticleSystem bloodFX;
         
         private Tweener _tweener;
         private Vector3 _currentGridPosition;
@@ -28,14 +29,17 @@ namespace Script.PacMovement {
                 pacAnimator.SetFloat(MoveX, 0);
                 pacAnimator.SetFloat(MoveY, 0);
                 StopMovementAudio();
+                StopDustEffect();
 
                 if (TryToMove(_lastInput)) {
                     _currentInput = _lastInput;
                     PlayMovementAudio();  
+                    PlayDustEffect();
                 } 
                 else if (_currentInput.HasValue) {
                     if (TryToMove(_currentInput)) {
                         PlayMovementAudio();
+                        PlayDustEffect();
                     }
                 }
             } 
@@ -113,5 +117,17 @@ namespace Script.PacMovement {
             }
         }
         
+        private void PlayDustEffect() {
+            if (!bloodFX.isPlaying) {
+                bloodFX.Play(); // Play the dust particle effect
+            }
+        }
+
+        private void StopDustEffect() {
+            if (bloodFX.isPlaying) {
+                bloodFX.Stop(); // Stop the dust particle effect
+            }
+        }
+
     }
 }
