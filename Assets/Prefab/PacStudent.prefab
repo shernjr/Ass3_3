@@ -12,9 +12,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: PacStudent
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: de52e872a52737148997d5ec09c52141, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: de52e872a52737148997d5ec09c52141, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: de52e872a52737148997d5ec09c52141, type: 3}
       propertyPath: m_SortingLayerID

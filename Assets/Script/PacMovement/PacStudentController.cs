@@ -4,38 +4,17 @@ namespace Script.PacMovement {
     public class PacStudentController : MonoBehaviour {
 
         public Transform pacStudent;
-        public Transform topLeftQuadrant;
-        public Transform topRightQuadrant;
-        public Transform bottomLeftQuadrant;
-        public Transform bottomRightQuadrant;
-        
         public float moveSpeed = 1f;
         public Animator pacAnimator;
         public AudioSource moveAudio;
+        
         private Tweener _tweener;
         private Vector3 _currentGridPosition;
         private KeyCode? _lastInput = null;
         private KeyCode? _currentInput = null;
+        private static readonly int MoveX = Animator.StringToHash("moveX");
+        private static readonly int MoveY = Animator.StringToHash("moveY");
 
-        int[,] _levelMap = 
-        { 
-            {1,2,2,2,2,2,2,2,2,2,2,2,2,7}, 
-            {2,5,5,5,5,5,5,5,5,5,5,5,5,4}, 
-            {2,5,3,4,4,3,5,3,4,4,4,3,5,4}, 
-            {2,6,4,0,0,4,5,4,0,0,0,4,5,4}, 
-            {2,5,3,4,4,3,5,3,4,4,4,3,5,3}, 
-            {2,5,5,5,5,5,5,5,5,5,5,5,5,5}, 
-            {2,5,3,4,4,3,5,3,3,5,3,4,4,4}, 
-            {2,5,3,4,4,3,5,4,4,5,3,4,4,3}, 
-            {2,5,5,5,5,5,5,4,4,5,5,5,5,4}, 
-            {1,2,2,2,2,1,5,4,3,4,4,3,0,4}, 
-            {0,0,0,0,0,2,5,4,3,4,4,3,0,3}, 
-            {0,0,0,0,0,2,5,4,4,0,0,0,0,0}, 
-            {0,0,0,0,0,2,5,4,4,0,3,4,4,0}, 
-            {2,2,2,2,2,1,5,3,3,0,4,0,0,0}, 
-            {0,0,0,0,0,0,5,0,0,0,4,0,0,0}, 
-        };
-        
         private void Start() {
             _tweener = GetComponent<Tweener>();
             _currentGridPosition = pacStudent.position;
@@ -44,7 +23,11 @@ namespace Script.PacMovement {
         private void Update() {
             GetMovementOnKeyDown();
             if (!_tweener.TweenExists(pacStudent)) {
-                TryToMove(_lastInput);
+                if (TryToMove(_lastInput)) {
+                    _currentInput = _lastInput;
+                } else if (_currentInput.HasValue) {
+                    TryToMove(_currentInput);
+                }
             }
         }
 
@@ -55,32 +38,31 @@ namespace Script.PacMovement {
             if (Input.GetKeyDown(KeyCode.D)) _lastInput = KeyCode.D;
         }
 
-        private void TryToMove(KeyCode? input) {
-            if (!input.HasValue) return;
+        private bool TryToMove(KeyCode? input) {
+            if (!input.HasValue) return false;
             Vector3 targetGridPosition = _currentGridPosition;
+            Vector3 direction = Vector3.zero;
 
             switch (input.Value) {
-                case KeyCode.W: targetGridPosition += Vector3.up; break;
-                case KeyCode.A: targetGridPosition += Vector3.left; break;
-                case KeyCode.S: targetGridPosition += Vector3.down; break;
-                case KeyCode.D: targetGridPosition += Vector3.right; break;
+                case KeyCode.W: direction += Vector3.up; break;
+                case KeyCode.A: direction += Vector3.left; break;
+                case KeyCode.S: direction += Vector3.down; break;
+                case KeyCode.D: direction += Vector3.right; break;
             }
-            
-            if (IsWalkable(targetGridPosition)) {
-                _currentInput = input;
+
+            targetGridPosition += direction;
+
+            if (IsWalkable(direction)) {
                 MoveToGridPosition(targetGridPosition);
-            } else if (_currentInput.HasValue) {
-                TryToMove(_currentInput);
+                return true;
             }
+
+            return false;
         }
 
-        private bool IsWalkable(Vector3 gridPos) {
-            int x = Mathf.RoundToInt(gridPos.x);
-            int y = Mathf.RoundToInt(gridPos.y);
-
-            return x >= 0 && x < _levelMap.GetLength(1) &&
-                   y >= 0 && y < _levelMap.GetLength(0) &&
-                   (_levelMap[y, x] == 5 || _levelMap[y, x] == 6);
+        private bool IsWalkable(Vector3 direction) {
+            RaycastHit2D hit = Physics2D.Raycast(_currentGridPosition, direction, 1f, LayerMask.GetMask("Wall"));
+            return !hit.collider;
         }
         
         private void MoveToGridPosition(Vector3 targetGridPosition) {
@@ -96,8 +78,8 @@ namespace Script.PacMovement {
         }
         
         private void UpdateAnimator(Vector3 direction) {
-            pacAnimator.SetFloat("moveX", direction.x);
-            pacAnimator.SetFloat("moveY", direction.y);
+            pacAnimator.SetFloat(MoveX, direction.x);
+            pacAnimator.SetFloat(MoveY, direction.y);
         }
         
         private void PlayMovementAudio() {

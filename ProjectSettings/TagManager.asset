@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Pellet
+  - Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
   - Map
@@ -44,6 +45,9 @@ TagManager:
     locked: 0
   - name: Map
     uniqueID: 1861401305
+    locked: 0
+  - name: Wall
+    uniqueID: 1196552065
     locked: 0
   - name: GameObjects
     uniqueID: 542186005
